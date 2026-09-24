@@ -1,0 +1,13 @@
+<?php
+// Tento soubor běžně vytváří instalační průvodce automaticky.
+define('DB_HOST', 'localhost');
+define('DB_PORT', 3306);
+define('DB_NAME', 'podnikappka');
+define('DB_USER', 'podnikappka');
+define('DB_PASS', '');
+define('SMTP_HOST', '');
+define('SMTP_USER', '');
+define('SMTP_PASS', '');
+define('SMTP_PORT', 587);
+define('SMTP_ENCRYPTION', 'tls');
+define('BASE_URL', '/');
