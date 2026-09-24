@@ -2,6 +2,17 @@
 
 return [
     [
+        'version' => '1.2.3',
+        'released_at' => '2026-09-24',
+        'title' => 'Přehlednější informace k aktualizacím',
+        'important' => false,
+        'changes' => [
+            'Sekce Ruční aktualizace byla nahrazena přehlednější sekcí Aktualizace.',
+            'Doplněn popis doporučené aktualizace na kliknutí přímo z GitHub Releases.',
+            'Ruční aktualizace zůstává popsána jako záložní způsob včetně ochrany lokální konfigurace a dat.',
+        ],
+    ],
+    [
         'version' => '1.2.2',
         'released_at' => '2026-09-24',
         'title' => 'Sjednocení ikony aktualizací',

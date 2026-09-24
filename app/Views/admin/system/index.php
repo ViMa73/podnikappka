@@ -105,38 +105,45 @@ $runButtonDisabled = $hasPendingMigrations ? '' : 'disabled';
   </div>
 
   <div class="rounded-2xl p-5 shadow-sm" style="background: var(--card); border: 1px solid var(--border);">
-    <h2 class="text-lg font-semibold mb-4" style="color: var(--text);">Ruční aktualizace</h2>
+    <h2 class="text-lg font-semibold mb-4" style="color: var(--text);">Aktualizace</h2>
 
-    <div class="space-y-4 text-sm" style="color: var(--text);">
-      <div class="p-4 rounded-xl" style="background: var(--bg); border: 1px solid var(--border);">
-        <div class="font-semibold mb-2">Pokud vzdálená aktualizace není dostupná</div>
-        <ol class="list-decimal pl-5 space-y-1">
-          <li>Stáhněte si novou verzi PodnikAppky z oficiálního zdroje.</li>
-          <li>Před aktualizací si zazálohujte databázi a soubory aplikace.</li>
-          <li>Rozbalte stažený balíček a nahrajte nové soubory na server přes stávající instalaci.</li>
-          <li><strong>Nemažte ani nepřepisujte soubor <code>config/local.php</code> a soubor <code>storage/installed.lock</code>.</strong> Obsahují údaje potřebné pro vaši konkrétní instalaci.</li>
-          <li>Po nahrání souborů se přihlaste do PodnikAppky a otevřete <strong>Systém / Aktualizace</strong>.</li>
-          <li>Pokud jsou uvedeny čekající migrace, klikněte na <strong>Spustit migrace</strong>.</li>
-          <li>Po dokončení zkontrolujte, že aplikace funguje správně a že stránka zobrazuje novou verzi.</li>
-        </ol>
-      </div>
-
-      <div class="p-4 rounded-xl" style="background: color-mix(in srgb, var(--primary) 8%, var(--card)); border: 1px solid var(--border);">
-        <div class="font-semibold mb-2">Co jsou databázové migrace?</div>
-        <p>
-          Některé aktualizace mění také strukturu databáze. Pokud je po nahrání nové verze u položky „Čekající migrace“ číslo vyšší než 0, spusťte je tlačítkem výše. Pokud žádné čekající migrace nejsou, není potřeba nic dalšího dělat.
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm">
+      <div class="p-4 rounded-xl" style="background: color-mix(in srgb, var(--primary) 8%, var(--card)); border: 1px solid var(--border); color: var(--text);">
+        <div class="flex items-center gap-2 mb-2">
+          <div class="font-semibold">Aktualizace na kliknutí</div>
+          <span class="text-xs px-2 py-0.5 rounded-full" style="background: var(--primary); color: var(--primary-text);">Doporučeno</span>
+        </div>
+        <p style="color: var(--muted);">
+          Nejsnazší způsob aktualizace PodnikAppky. Aplikace automaticky kontroluje dostupnost nové verze v oficiálním GitHub repozitáři.
+        </p>
+        <p class="mt-3">
+          Pokud je dostupná novější verze, zobrazí se v horní části této stránky. Kliknutím na <strong>Aktualizovat nyní</strong> PodnikAppka stáhne instalační balíček, vytvoří zálohu aplikačních souborů a provede aktualizaci. Lokální konfigurace, storage a nahrané soubory zůstanou zachovány.
+        </p>
+        <p class="mt-3">
+          Po dokončení aktualizace zkontrolujte položku <strong>Čekající migrace</strong>. Pokud jsou k dispozici, spusťte je tlačítkem <strong>Spustit migrace</strong>.
         </p>
       </div>
 
-      <div class="p-4 rounded-xl" style="background: color-mix(in srgb, var(--error) 8%, var(--card)); border: 1px solid var(--border);">
-        <div class="font-semibold mb-2">Důležité před aktualizací</div>
-        <ul class="list-disc pl-5 space-y-1">
-          <li>Vždy mějte aktuální zálohu databáze a souborů aplikace.</li>
-          <li>Při ručním nahrávání nové verze zachovejte lokální konfiguraci své instalace.</li>
-          <li>Pokud jste si zdrojové soubory PodnikAppky sami upravovali, aktualizace může vaše změny přepsat. Před aktualizací si je proto zazálohujte.</li>
-          <li>Pokud aktualizace skončí chybou, neprovádějte novou instalaci přes původní data. Obnovte zálohu nebo nejprve zjistěte příčinu chyby.</li>
-        </ul>
+      <div class="p-4 rounded-xl" style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
+        <div class="font-semibold mb-2">Ruční aktualizace</div>
+        <p style="color: var(--muted);">
+          Záložní způsob pro případ, že aktualizaci na kliknutí nelze použít.
+        </p>
+        <ol class="list-decimal pl-5 mt-3 space-y-1">
+          <li>Stáhněte instalační ZIP požadované verze z <a href="https://github.com/ViMa73/podnikappka/releases" target="_blank" rel="noopener noreferrer" class="underline">oficiálních GitHub Releases</a>.</li>
+          <li>Před aktualizací zazálohujte databázi a soubory aplikace.</li>
+          <li>Rozbalte balíček a jeho obsah nahrajte na server přes stávající instalaci PodnikAppky.</li>
+          <li><strong>Zachovejte místní konfiguraci a uživatelská data, zejména <code>config/local.php</code>, <code>storage/</code> a <code>uploads/</code>.</strong></li>
+          <li>Po nahrání souborů znovu otevřete <strong>Systém / Aktualizace</strong> a spusťte případné čekající migrace.</li>
+        </ol>
       </div>
+    </div>
+
+    <div class="mt-4 p-4 rounded-xl text-sm" style="background: color-mix(in srgb, var(--error) 8%, var(--card)); border: 1px solid var(--border); color: var(--text);">
+      <div class="font-semibold mb-2">Důležité před aktualizací</div>
+      <p>
+        Doporučujeme mít aktuální zálohu databáze i souborů aplikace. Pokud jste zdrojové soubory PodnikAppky sami upravovali, aktualizace může vaše změny přepsat. Při chybě aktualizace neprovádějte novou instalaci přes původní data; nejprve zjistěte příčinu nebo obnovte zálohu.
+      </p>
     </div>
   </div>
 
