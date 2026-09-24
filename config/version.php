@@ -1,6 +1,6 @@
 <?php
 return [
-    'version' => '1.2.1',
+    'version' => '1.2.2',
     'released_at' => '2026-09-24',
-    'name' => 'Pevný oficiální GitHub zdroj aktualizací',
+    'name' => 'Sjednocení ikony aktualizací',
 ];

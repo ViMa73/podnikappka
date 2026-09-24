@@ -2,6 +2,16 @@
 
 return [
     [
+        'version' => '1.2.2',
+        'released_at' => '2026-09-24',
+        'title' => 'Sjednocení ikony aktualizací',
+        'important' => false,
+        'changes' => [
+            'Ikona položky Systém / Aktualizace byla sjednocena s vizuálním stylem ostatních položek menu.',
+            'Nově používá ikonu Cloud Download ze SVG Repo.',
+        ],
+    ],
+    [
         'version' => '1.2.1',
         'released_at' => '2026-09-24',
         'title' => 'Pevný oficiální GitHub zdroj aktualizací',
