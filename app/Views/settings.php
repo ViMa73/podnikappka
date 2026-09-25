@@ -543,7 +543,7 @@ $places = $stmt->fetchAll();
         <?php endif; ?>
 
         <?php foreach ($places as $place): ?>
-          <?php $notesOn = (int)($place['notes_enabled'] ?? 0) === 1; ?>
+          <?php $notesOn = (int)($place['notes_enabled'] ?? 0) === 1; $holidayLockOn = (int)($place['lock_on_holiday'] ?? 0) === 1; ?>
 
           <div class="service-place p-4 rounded-xl mb-3"
               data-id="<?= (int)$place['id'] ?>"
@@ -576,6 +576,13 @@ $places = $stmt->fetchAll();
                             color: <?= $notesOn ? 'var(--text)' : 'var(--muted)' ?>;
                             border: 1px solid var(--border);">
                   Poznámky: <?= $notesOn ? 'ON' : 'OFF' ?>
+                </span>
+
+                <span class="px-2 py-1 rounded text-xs"
+                      style="background: <?= $holidayLockOn ? 'color-mix(in srgb, var(--primary) 18%, transparent)' : 'color-mix(in srgb, var(--border) 30%, transparent)' ?>;
+                            color: <?= $holidayLockOn ? 'var(--text)' : 'var(--muted)' ?>;
+                            border: 1px solid var(--border);">
+                  Svátky: <?= $holidayLockOn ? 'zamčeno' : 'povoleno' ?>
                 </span>
               </div>
 
@@ -642,6 +649,21 @@ $places = $stmt->fetchAll();
                 </label>
               </div>
 
+              <div class="flex items-start gap-3 p-4 rounded-xl"
+                  style="background: var(--bg); border: 1px solid var(--border);">
+                <input type="checkbox"
+                      name="lock_on_holiday"
+                      id="lock_on_holiday_<?= (int)$place['id'] ?>"
+                      class="mt-1 h-4 w-4"
+                      <?= $holidayLockOn ? 'checked' : '' ?>>
+                <label for="lock_on_holiday_<?= (int)$place['id'] ?>" class="cursor-pointer">
+                  <div class="font-semibold" style="color: var(--text);">Uzamknout při svátku</div>
+                  <div class="text-sm" style="color: var(--muted);">
+                    Ve státní a ostatní svátky nebude možné na tomto místě zapisovat služby.
+                  </div>
+                </label>
+              </div>
+
               <div class="flex gap-3">
                 <button type="submit" class="btn-primary rounded px-4 py-2 text-sm">
                   Uložit
@@ -699,6 +721,20 @@ $places = $stmt->fetchAll();
               <div class="font-semibold" style="color: var(--text);">Evidovat poznámky</div>
               <div class="text-sm" style="color: var(--muted);">
                 U tohoto místa bude možné zapisovat poznámky.
+              </div>
+            </label>
+          </div>
+
+          <div class="flex items-start gap-3 p-4 rounded-xl"
+              style="background: var(--bg); border: 1px solid var(--border);">
+            <input type="checkbox"
+                  name="lock_on_holiday"
+                  id="lock_on_holiday_add"
+                  class="mt-1 h-4 w-4">
+            <label for="lock_on_holiday_add" class="cursor-pointer">
+              <div class="font-semibold" style="color: var(--text);">Uzamknout při svátku</div>
+              <div class="text-sm" style="color: var(--muted);">
+                Ve státní a ostatní svátky nebude možné na tomto místě zapisovat služby.
               </div>
             </label>
           </div>

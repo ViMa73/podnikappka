@@ -72,6 +72,7 @@ $dayNotesMapJson = json_encode($dayNotesMap ?? [], JSON_UNESCAPED_UNICODE | JSON
               $placeName = (string)($p['name'] ?? '');
               $placeDesc = (string)($p['description'] ?? '');
               $notesEnabledPlace = ((int)($p['notes_enabled'] ?? 0) === 1);
+              $lockOnHoliday = ((int)($p['lock_on_holiday'] ?? 0) === 1);
             ?>
             <tr>
               <td class="sticky left-0 z-10 px-4 py-3 align-top"
@@ -93,6 +94,8 @@ $dayNotesMapJson = json_encode($dayNotesMap ?? [], JSON_UNESCAPED_UNICODE | JSON
                   $isToday = ($dateY === $todayStr);
 
                   $open = ($bit > 0) && (($mask & $bit) === $bit);
+                  $holidayName = $d['holiday_name'] ?? null;
+                  $holidayLocked = $open && $lockOnHoliday && $holidayName !== null;
 
                   $a = $assignments[$placeId][$dateY] ?? null;
                   $isAssigned = is_array($a);
@@ -113,7 +116,7 @@ $dayNotesMapJson = json_encode($dayNotesMap ?? [], JSON_UNESCAPED_UNICODE | JSON
                       ($role === 'manager' && $managerCanAssign)
                   );
 
-                  if (!$open) {
+                  if (!$open || $holidayLocked) {
                       $cellBg = $isToday ? $bgClosedToday : $bgClosed;
                   } elseif ($isAssigned) {
                       $cellBg = $isToday ? $bgTakenToday : $bgTaken;
@@ -127,6 +130,12 @@ $dayNotesMapJson = json_encode($dayNotesMap ?? [], JSON_UNESCAPED_UNICODE | JSON
 
                   <?php if (!$open): ?>
                     <div class="text-xs font-semibold" style="color: var(--text);">Zavřeno</div>
+
+                  <?php elseif ($holidayLocked): ?>
+                    <div class="text-xs font-semibold" style="color: var(--text);">Svátek</div>
+                    <div class="mt-1 text-xs" style="color: var(--muted);">
+                      <?= htmlspecialchars((string)$holidayName) ?>
+                    </div>
 
                   <?php elseif ($isAssigned): ?>
                     <div class="text-sm font-semibold" style="color: var(--text);">

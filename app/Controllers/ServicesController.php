@@ -6,6 +6,7 @@ use Core\Auth;
 use Core\CSRF;
 use Core\WeekDays;
 use Core\Feature;
+use Core\CzechHolidays;
 
 class ServicesController
 {
@@ -67,7 +68,7 @@ class ServicesController
     {
         $db = DB::get();
         $stmt = $db->prepare("
-            SELECT id, name, description, days_mask, notes_enabled
+            SELECT id, name, description, days_mask, notes_enabled, lock_on_holiday
             FROM service_places
             WHERE id = ? AND company_id = ?
             LIMIT 1
@@ -103,7 +104,7 @@ class ServicesController
 
         // místa
         $stmt = $db->prepare("
-            SELECT id, name, description, days_mask, notes_enabled
+            SELECT id, name, description, days_mask, notes_enabled, lock_on_holiday
             FROM service_places
             WHERE company_id = ?
             ORDER BY id ASC
@@ -142,7 +143,8 @@ class ServicesController
                 'name'  => WeekDays::$names[$key] ?? $key,
                 'date'  => $date,
                 'dateY' => $date->format('Y-m-d'),
-                'label' => (WeekDays::$names[$key] ?? $key) . ' ' . $date->format('j.n.')
+                'label' => (WeekDays::$names[$key] ?? $key) . ' ' . $date->format('j.n.'),
+                'holiday_name' => CzechHolidays::getHolidayName($date)
             ];
         }
 
@@ -496,6 +498,12 @@ class ServicesController
 
         if (!$open) {
             $_SESSION['flash_error'] = "Toto místo je v daný den zavřené.";
+            $this->redirect('/services');
+        }
+
+        $holidayName = CzechHolidays::getHolidayName($dt);
+        if (!empty($place['lock_on_holiday']) && $holidayName !== null) {
+            $_SESSION['flash_error'] = "Na tomto místě nelze ve svátek zapsat službu (" . $holidayName . ").";
             $this->redirect('/services');
         }
 

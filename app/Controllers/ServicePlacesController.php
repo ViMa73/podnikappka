@@ -36,6 +36,7 @@ class ServicePlacesController
         $name = trim($_POST['name'] ?? '');
         $description = trim($_POST['description'] ?? '');
         $notesEnabled = isset($_POST['notes_enabled']) ? 1 : 0;
+        $lockOnHoliday = isset($_POST['lock_on_holiday']) ? 1 : 0;
 
         if ($name === '') {
             $_SESSION['flash_error'] = 'Název místa je povinný.';
@@ -46,15 +47,16 @@ class ServicePlacesController
         $mask = WeekDays::toMask($_POST['days'] ?? []);
 
         $stmt = DB::get()->prepare("
-            INSERT INTO service_places (company_id, name, description, days_mask, notes_enabled)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO service_places (company_id, name, description, days_mask, notes_enabled, lock_on_holiday)
+            VALUES (?, ?, ?, ?, ?, ?)
         ");
         $stmt->execute([
             Auth::companyId(),
             $name,
             $description ?: null,
             $mask,
-            $notesEnabled
+            $notesEnabled,
+            $lockOnHoliday
         ]);
 
         $_SESSION['flash_success'] = 'Místo bylo přidáno.';
@@ -94,12 +96,13 @@ class ServicePlacesController
         }
 
         $notesEnabled = isset($_POST['notes_enabled']) ? 1 : 0;
+        $lockOnHoliday = isset($_POST['lock_on_holiday']) ? 1 : 0;
 
         $mask = \Core\WeekDays::toMask($_POST['days'] ?? []);
 
         $stmt = \Core\DB::get()->prepare("
             UPDATE service_places
-            SET name = ?, description = ?, days_mask = ?, notes_enabled = ?
+            SET name = ?, description = ?, days_mask = ?, notes_enabled = ?, lock_on_holiday = ?
             WHERE id = ? AND company_id = ?
         ");
         $stmt->execute([
@@ -107,6 +110,7 @@ class ServicePlacesController
             trim($_POST['description'] ?? '') ?: null,
             $mask,
             $notesEnabled,
+            $lockOnHoliday,
             $id,
             \Core\Auth::companyId()
         ]);

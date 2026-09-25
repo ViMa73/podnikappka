@@ -207,6 +207,7 @@ return function (\PDO $db): void {
             created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
             notes_enabled TINYINT(1) NOT NULL DEFAULT 0,
+            lock_on_holiday TINYINT(1) NOT NULL DEFAULT 0,
             PRIMARY KEY (id),
             KEY idx_company (company_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci

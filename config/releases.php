@@ -2,6 +2,17 @@
 
 return [
     [
+        'version' => '1.2.7',
+        'released_at' => '2026-09-25',
+        'title' => 'Uzamčení služeb ve svátky',
+        'important' => false,
+        'changes' => [
+            'U každého místa v modulu Služby lze nově nastavit, zda se má ve svátek automaticky uzamknout.',
+            'Uzamčený sváteční den se v přehledu služeb zobrazí stejně jako zavřený den, doplněný o označení Svátek a jeho název.',
+            'Do uzamčeného svátečního dne nelze službu zapsat ani přímým odesláním formuláře.',
+        ],
+    ],
+    [
         'version' => '1.2.6',
         'released_at' => '2026-09-25',
         'title' => 'Automatická evidence svátků',
