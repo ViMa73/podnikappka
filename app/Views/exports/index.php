@@ -50,7 +50,7 @@ $previousMonth = (new \DateTimeImmutable('first day of last month'))->format('Y-
     <div class="rounded-2xl shadow p-6" style="background: var(--card); border: 1px solid var(--border);">
       <h2 class="text-xl font-semibold mb-2" style="color: var(--text);">Docházka</h2>
       <p class="text-sm mb-6" style="color: var(--muted);">Vyber měsíc a zaměstnance. Vytvoří se tiskový přehled evidence docházky včetně měsíčního vyhodnocení a podpisových polí.</p>
-      <form method="GET" action="/exports/attendance/print" target="_blank" class="space-y-4">
+      <form method="GET" action="/exports/attendance/print" target="attendanceExportWindow" onsubmit="window.open('', 'attendanceExportWindow', 'width=1100,height=900,resizable=yes,scrollbars=yes');" class="space-y-4">
         <div><label class="block text-sm mb-1" style="color: var(--text);">Měsíc</label><input type="month" name="month" value="<?= htmlspecialchars($previousMonth) ?>" required class="w-full px-4 py-3 rounded-lg" style="background: var(--bg); border: 1px solid var(--border); color: var(--text);"></div>
         <div><label class="block text-sm mb-1" style="color: var(--text);">Osoba</label><select name="user_id" required class="w-full px-4 py-3 rounded-lg" style="background: var(--bg); border: 1px solid var(--border); color: var(--text);"><option value="">Vyber osobu</option><?php foreach (($attendanceUsers ?? []) as $u): ?><option value="<?= (int)$u['id'] ?>"><?= htmlspecialchars(trim(($u['first_name'] ?? '') . ' ' . ($u['last_name'] ?? ''))) ?></option><?php endforeach; ?></select></div>
         <button type="submit" class="btn-primary px-5 py-3 rounded-lg font-semibold">Exportovat docházku</button>

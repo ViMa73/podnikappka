@@ -101,7 +101,7 @@ foreach ($days as $day) {
             Aktuální měsíc
           </a>
 
-          <a href="/attendance/export?month=<?= urlencode($monthCurrent) ?>" target="_blank"
+          <a href="/attendance/export?month=<?= urlencode($monthCurrent) ?>" target="attendanceExportWindow" onclick="window.open(this.href, 'attendanceExportWindow', 'width=1100,height=900,resizable=yes,scrollbars=yes'); return false;"
              class="px-5 py-3 rounded-lg font-semibold inline-flex items-center gap-2"
              style="background: var(--bg); border: 1px solid var(--border); color: var(--text);"
              title="Exportovat docházku">
