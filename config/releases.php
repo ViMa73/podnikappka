@@ -2,6 +2,17 @@
 
 return [
     [
+        'version' => '1.2.4',
+        'released_at' => '2026-09-25',
+        'title' => 'Export evidence docházky',
+        'important' => false,
+        'changes' => [
+            'Na stránku Exporty přibyl export měsíční evidence docházky podle osoby a měsíce.',
+            'Přehled docházky je připraven pro tisk nebo uložení do PDF a obsahuje měsíční souhrn i podpisová pole.',
+            'Na stránce Docházka přibylo tlačítko Exportovat pro aktuálně zobrazený měsíc přihlášeného uživatele.',
+        ],
+    ],
+    [
         'version' => '1.2.3',
         'released_at' => '2026-09-24',
         'title' => 'Přehlednější informace k aktualizacím',

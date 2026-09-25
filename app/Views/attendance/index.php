@@ -100,6 +100,13 @@ foreach ($days as $day) {
              style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
             Aktuální měsíc
           </a>
+
+          <a href="/attendance/export?month=<?= urlencode($monthCurrent) ?>" target="_blank"
+             class="px-5 py-3 rounded-lg font-semibold inline-flex items-center gap-2"
+             style="background: var(--bg); border: 1px solid var(--border); color: var(--text);"
+             title="Exportovat docházku">
+            <span aria-hidden="true">🖨</span> Exportovat
+          </a>
         </div>
       </form>
 

@@ -251,6 +251,14 @@ class AttendanceController
         require __DIR__ . '/../Views/layout.php';
     }
 
+    public function exportPrint(): void
+    {
+        $this->requireAuth();
+        $this->requireFeature();
+        $month = $this->normalizeMonth($_GET['month'] ?? null);
+        \Services\AttendanceExport::output((int)Auth::companyId(), (int)Auth::user(), $month);
+    }
+
     public function saveDay(): void
     {
         $this->requireAuth();

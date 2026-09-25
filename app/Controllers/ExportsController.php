@@ -95,6 +95,13 @@ class ExportsController
         $attendanceEnabled = Feature::enabled('attendance');
         $temperaturesEnabled = Feature::enabled('temperatures');
 
+        $attendanceUsers = [];
+        if ($attendanceEnabled) {
+            $stmt = $db->prepare("SELECT id, first_name, last_name FROM users WHERE company_id = ? AND status = 'active' ORDER BY last_name, first_name");
+            $stmt->execute([Auth::companyId()]);
+            $attendanceUsers = $stmt->fetchAll() ?: [];
+        }
+
         $temperatureExportOptions = [];
         if ($temperaturesEnabled) {
             $stmt = $db->prepare("
@@ -127,6 +134,16 @@ class ExportsController
         $view = 'exports/index';
         $title = 'Exporty';
         require __DIR__ . '/../Views/layout.php';
+    }
+
+    public function attendancePrint(): void
+    {
+        $this->requireAccess();
+        if (!Feature::enabled('attendance')) { http_response_code(404); echo 'Modul Docházka není zapnutý.'; return; }
+        $month = $this->normalizeMonth((string)($_GET['month'] ?? ''));
+        $userId = (int)($_GET['user_id'] ?? 0);
+        if (!$month || $userId < 1) { http_response_code(422); echo 'Vyber platný měsíc a uživatele.'; return; }
+        \Services\AttendanceExport::output((int)Auth::companyId(), $userId, $month);
     }
 
     public function mealVouchersPreview(): void

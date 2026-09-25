@@ -128,6 +128,7 @@ $router->get('/waste-reports/export', [Controllers\WasteReportsController::class
 
 $router->get('/attendance', [AttendanceController::class, 'index'], [AuthMiddleware::class]);
 $router->post('/attendance/day', [AttendanceController::class, 'saveDay'], [AuthMiddleware::class]);
+$router->get('/attendance/export', [AttendanceController::class, 'exportPrint'], [AuthMiddleware::class]);
 
 // ----------- Nastavení ---------
 $router->get('/settings', [SettingsController::class, 'index'], [AuthMiddleware::class]);
@@ -190,6 +191,7 @@ $router->get('/exports', [ExportsController::class, 'index']);
 
 $router->post('/exports/meal-vouchers/preview', [ExportsController::class, 'mealVouchersPreview']);
 $router->get('/exports/temperatures/print', [ExportsController::class, 'temperaturesPrint']);
+$router->get('/exports/attendance/print', [ExportsController::class, 'attendancePrint']);
 
 // ------------- teploty -------------
 $router->get('/temperatures', [Controllers\TemperaturesController::class, 'index']);
