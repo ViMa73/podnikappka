@@ -2,6 +2,17 @@
 
 return [
     [
+        'version' => '1.2.5',
+        'released_at' => '2026-09-25',
+        'title' => 'Vylepšení exportu evidence docházky',
+        'important' => false,
+        'changes' => [
+            'Export evidence docházky se nově otevírá v samostatném okně.',
+            'Po dokončení tisku nebo uložení do PDF se okno exportu automaticky zavře.',
+            'Rozložení vysvětlivek bylo upraveno a rozšířeno pro lepší čitelnost.',
+        ],
+    ],
+    [
         'version' => '1.2.4',
         'released_at' => '2026-09-25',
         'title' => 'Export evidence docházky',
