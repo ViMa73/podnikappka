@@ -177,7 +177,7 @@ $dayNotesMapJson = json_encode($dayNotesMap ?? [], JSON_UNESCAPED_UNICODE | JSON
                   <?php else: ?>
                     <div class="text-sm font-semibold" style="color: var(--text);">K dispozici</div>
 
-                    <div class="mt-2 flex flex-row flex-nowrap items-center gap-2">
+                    <div class="mt-2 flex flex-row flex-nowrap items-center justify-center gap-2">
                       <form method="POST" action="/services/assign" class="m-0 shrink-0">
                         <?= \Core\CSRF::field() ?>
                         <input type="hidden" name="place_id" value="<?= $placeId ?>">
@@ -276,8 +276,9 @@ $dayNotesMapJson = json_encode($dayNotesMap ?? [], JSON_UNESCAPED_UNICODE | JSON
                   </div>
                 <?php endif; ?>
 
+                <div class="mt-3 flex flex-row flex-nowrap items-center justify-center gap-2">
                 <button type="button"
-                        class="mt-3 px-3 py-1 rounded-lg text-xs font-semibold js-open-day-note-modal"
+                        class="shrink-0 px-3 py-1 rounded-lg text-xs font-semibold js-open-day-note-modal whitespace-nowrap"
                         style="background: var(--bg); border: 1px solid var(--border); color: var(--text);"
                         data-note-date="<?= htmlspecialchars($dateY) ?>"
                         data-day-label="<?= htmlspecialchars((string)($d['label'] ?? '')) ?>"
@@ -290,7 +291,7 @@ $dayNotesMapJson = json_encode($dayNotesMap ?? [], JSON_UNESCAPED_UNICODE | JSON
 
                 <?php if ($canManageDayNotesForOthers && !empty($colleagues)): ?>
                   <button type="button"
-                          class="mt-2 px-3 py-1 rounded-lg text-xs font-semibold js-open-day-note-modal"
+                          class="shrink-0 px-3 py-1 rounded-lg text-xs font-semibold js-open-day-note-modal whitespace-nowrap"
                           style="background: var(--bg); border: 1px solid var(--border); color: var(--text);"
                           data-note-date="<?= htmlspecialchars($dateY) ?>"
                           data-day-label="<?= htmlspecialchars((string)($d['label'] ?? '')) ?>"
@@ -298,6 +299,7 @@ $dayNotesMapJson = json_encode($dayNotesMap ?? [], JSON_UNESCAPED_UNICODE | JSON
                     Poznámka kolegy
                   </button>
                 <?php endif; ?>
+                </div>
 
               </td>
             <?php endforeach; ?>

@@ -2,6 +2,17 @@
 
 return [
     [
+        'version' => '1.2.9',
+        'released_at' => '2026-09-25',
+        'title' => 'Kompaktnější ovládání služeb a poznámek',
+        'important' => false,
+        'changes' => [
+            'Tlačítka Zapsat a Zapsat kolegu jsou v buňkách služeb nově zarovnána na střed.',
+            'Tlačítka Poznámka a Poznámka kolegy v řádku Denní poznámky se nově zobrazují vedle sebe a jsou zarovnána na střed.',
+            'Úprava dále šetří místo na výšku v týdenním přehledu.',
+        ],
+    ],
+    [
         'version' => '1.2.8',
         'released_at' => '2026-09-25',
         'title' => 'Úspornější zobrazení služeb',
