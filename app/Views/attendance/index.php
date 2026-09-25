@@ -170,6 +170,8 @@ foreach ($days as $day) {
         $record = $day['record'] ?? null;
         $isFuture = !empty($day['is_future']);
         $isToday = ($dateKey === $todayKey);
+        $holidayName = (string)($day['holiday_name'] ?? '');
+        $isAutomaticHoliday = !empty($record['_automatic_holiday']);
 
         $specialCode = (string)($record['special_code'] ?? '');
         $arrivalTime = attendance_value_time($record['arrival_time'] ?? '');
@@ -242,6 +244,14 @@ foreach ($days as $day) {
                 <span class="px-2 py-1 rounded-full text-xs font-semibold"
                       style="background: color-mix(in srgb, var(--primary) 16%, transparent); color: var(--text); border: 1px solid var(--border);">
                   Dnes
+                </span>
+              <?php endif; ?>
+
+              <?php if ($holidayName !== ''): ?>
+                <span class="px-2 py-1 rounded-full text-xs font-semibold"
+                      style="background: color-mix(in srgb, var(--attendance-holiday) 22%, var(--bg)); color: var(--text); border: 1px solid var(--border);"
+                      title="Státní svátek / ostatní svátek">
+                  <?= htmlspecialchars($holidayName) ?><?= $isAutomaticHoliday ? ' · automaticky' : '' ?>
                 </span>
               <?php endif; ?>
 

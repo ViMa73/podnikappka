@@ -7,6 +7,7 @@ use Core\DB;
 use Core\Feature;
 use Core\CSRF;
 use Core\DashboardLayout;
+use Core\CzechHolidays;
 
 class DashboardController extends Controller
 {
@@ -394,6 +395,24 @@ class DashboardController extends Controller
         ]);
 
         $workedMinutes = (int)($stmt->fetchColumn() ?? 0);
+
+        // Svátky bez ručně uložené docházky započteme stejně jako automatické S
+        // v měsíční evidenci, aby dashboard neukazoval falešné manko.
+        $holidayStmt = $db->prepare("
+            SELECT work_date
+            FROM attendance_records
+            WHERE company_id = ? AND user_id = ? AND work_date BETWEEN ? AND ?
+        ");
+        $holidayStmt->execute([$companyId, $userId, $monthStart->format('Y-m-d'), $today->format('Y-m-d')]);
+        $savedDates = array_fill_keys(array_map('strval', $holidayStmt->fetchAll(\PDO::FETCH_COLUMN) ?: []), true);
+        foreach (CzechHolidays::getYearHolidays((int)$today->format('Y')) as $holidayDate => $holidayName) {
+            if ($holidayDate < $monthStart->format('Y-m-d') || $holidayDate > $today->format('Y-m-d')) continue;
+            $holiday = new \DateTimeImmutable($holidayDate);
+            if ((int)$holiday->format('N') <= 5 && !isset($savedDates[$holidayDate])) {
+                $workedMinutes += $workloadMinutes;
+            }
+        }
+
         $balanceMinutes = $workedMinutes - $expectedMinutes;
 
         $toleranceMinutes = 60;

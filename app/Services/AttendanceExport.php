@@ -2,6 +2,7 @@
 namespace Services;
 
 use Core\DB;
+use Core\CzechHolidays;
 
 class AttendanceExport
 {
@@ -29,7 +30,9 @@ class AttendanceExport
         $prescribedDays=0; for($d=$start;$d<=$end;$d=$d->modify('+1 day')) if((int)$d->format('N')<=5) $prescribedDays++;
         $rows='';
         for($d=$start;$d<=$end;$d=$d->modify('+1 day')) {
-            $key=$d->format('Y-m-d'); $r=$by[$key]??[]; $sp=(string)($r['special_code']??'');
+            $key=$d->format('Y-m-d'); $r=$by[$key]??[];
+            if (!$r && (int)$d->format('N') <= 5 && CzechHolidays::isHoliday($key)) { $r=['special_code'=>'S','worked_minutes'=>$workload]; }
+            $sp=(string)($r['special_code']??'');
             $code=$sp==='PN'?'N':$sp; $worked=(int)($r['worked_minutes']??0);
             if($sp==='') { if($worked>0){$sum['work']['d']++;$sum['work']['m']+=$worked;} }
             elseif(isset($sum[$code])) { $m=$worked>0?$worked:$workload; $sum[$code]['d']++;$sum[$code]['m']+=$m; $worked=$m; }

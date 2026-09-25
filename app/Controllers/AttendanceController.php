@@ -7,6 +7,7 @@ use Core\DB;
 use Core\Feature;
 use Core\AttendanceMonthLock;
 use Core\AttendanceMonthLockException;
+use Core\CzechHolidays;
 
 class AttendanceController
 {
@@ -235,11 +236,27 @@ class AttendanceController
         while ($cursor <= $monthEnd) {
             $dateKey = $cursor->format('Y-m-d');
             $record = $recordsByDate[$dateKey] ?? null;
+            $holidayName = CzechHolidays::getHolidayName($dateKey);
+            $isWeekday = (int)$cursor->format('N') <= 5;
+
+            // Zákonné svátky se evidují automaticky. Pokud pro pracovní den
+            // neexistuje ruční záznam, vytvoříme pouze virtuální záznam S.
+            // Do DB nic nevkládáme, takže skutečně odpracovaný svátek může
+            // uživatel normálně přepsat běžnou docházkou.
+            if ($record === null && $holidayName !== null && $isWeekday) {
+                $record = [
+                    'work_date' => $dateKey,
+                    'special_code' => 'S',
+                    'worked_minutes' => $userWorkloadMinutes,
+                    '_automatic_holiday' => true,
+                ];
+            }
 
             $days[] = [
                 'date' => $cursor,
                 'date_key' => $dateKey,
                 'is_future' => ($dateKey > $todayStr),
+                'holiday_name' => $holidayName,
                 'record' => $record,
             ];
 

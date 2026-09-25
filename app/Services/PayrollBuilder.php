@@ -423,6 +423,28 @@ class PayrollBuilder
         $stmt->execute([$this->companyId, $userId, $from, $to]);
         $rows = $stmt->fetchAll() ?: [];
 
+        // Doplníme zákonné svátky, které připadají na pracovní den a nemají
+        // vlastní záznam docházky. Jde o virtuální položky pouze pro výpočet.
+        $rowsByDate = [];
+        foreach ($rows as $row) {
+            $rowsByDate[(string)$row['work_date']] = true;
+        }
+        foreach (CzechHolidays::getYearHolidays($this->year) as $holidayDate => $holidayName) {
+            if (substr($holidayDate, 0, 7) !== sprintf('%04d-%02d', $this->year, $this->month)) {
+                continue;
+            }
+            $holiday = new \DateTimeImmutable($holidayDate);
+            if ((int)$holiday->format('N') > 5 || isset($rowsByDate[$holidayDate])) {
+                continue;
+            }
+            $rows[] = [
+                'work_date' => $holidayDate,
+                'special_code' => 'S',
+                'worked_minutes' => (int)round(max(0, $workloadHours) * 60),
+            ];
+        }
+        usort($rows, static fn(array $a, array $b): int => strcmp((string)$a['work_date'], (string)$b['work_date']));
+
         $days = [];
         $workHours = 0.0;
         $weekendHours = 0.0;

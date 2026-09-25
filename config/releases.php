@@ -2,6 +2,19 @@
 
 return [
     [
+        'version' => '1.2.6',
+        'released_at' => '2026-09-25',
+        'title' => 'Automatická evidence svátků',
+        'important' => false,
+        'changes' => [
+            'České státní a ostatní svátky se nově rozpoznávají automaticky bez ručního zadávání.',
+            'Pohyblivé velikonoční svátky (Velký pátek a Velikonoční pondělí) se počítají automaticky pro každý rok.',
+            'Svátek připadající na pracovní den se v docházce automaticky eviduje jako S, pokud pro den neexistuje vlastní záznam.',
+            'Pokud zaměstnanec ve svátek skutečně pracuje, lze automatický svátek přepsat běžnou docházkou a výpočet mzdy jej vyhodnotí jako práci ve svátek.',
+            'Automatické svátky se promítají také do exportu docházky, výpočtu výplaty a měsíčního přehledu na dashboardu.',
+        ],
+    ],
+    [
         'version' => '1.2.5',
         'released_at' => '2026-09-25',
         'title' => 'Vylepšení exportu evidence docházky',
