@@ -1,6 +1,6 @@
 <?php
 return [
-    'version' => '1.2.7',
+    'version' => '1.2.8',
     'released_at' => '2026-09-25',
-    'name' => 'Uzamčení služeb ve svátky',
+    'name' => 'Úspornější zobrazení služeb',
 ];

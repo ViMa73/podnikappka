@@ -2,6 +2,16 @@
 
 return [
     [
+        'version' => '1.2.8',
+        'released_at' => '2026-09-25',
+        'title' => 'Úspornější zobrazení služeb',
+        'important' => false,
+        'changes' => [
+            'Tlačítka Zapsat a Zapsat kolegu se v tabulce služeb nově zobrazují vedle sebe, pokud jsou dostupná obě.',
+            'Úprava šetří místo na výšku a zpřehledňuje týdenní přehled služeb.',
+        ],
+    ],
+    [
         'version' => '1.2.7',
         'released_at' => '2026-09-25',
         'title' => 'Uzamčení služeb ve svátky',

@@ -177,27 +177,29 @@ $dayNotesMapJson = json_encode($dayNotesMap ?? [], JSON_UNESCAPED_UNICODE | JSON
                   <?php else: ?>
                     <div class="text-sm font-semibold" style="color: var(--text);">K dispozici</div>
 
-                    <form method="POST" action="/services/assign" class="mt-2">
-                      <?= \Core\CSRF::field() ?>
-                      <input type="hidden" name="place_id" value="<?= $placeId ?>">
-                      <input type="hidden" name="service_date" value="<?= htmlspecialchars($dateY) ?>">
-                      <input type="hidden" name="_week" value="<?= htmlspecialchars($weekStr) ?>">
-                      <button type="submit"
-                              class="px-3 py-1 rounded-lg text-xs font-semibold btn-primary">
-                        Zapsat
-                      </button>
-                    </form>
+                    <div class="mt-2 flex flex-row flex-nowrap items-center gap-2">
+                      <form method="POST" action="/services/assign" class="m-0 shrink-0">
+                        <?= \Core\CSRF::field() ?>
+                        <input type="hidden" name="place_id" value="<?= $placeId ?>">
+                        <input type="hidden" name="service_date" value="<?= htmlspecialchars($dateY) ?>">
+                        <input type="hidden" name="_week" value="<?= htmlspecialchars($weekStr) ?>">
+                        <button type="submit"
+                                class="px-3 py-1 rounded-lg text-xs font-semibold btn-primary whitespace-nowrap">
+                          Zapsat
+                        </button>
+                      </form>
 
-                    <?php if ($canAssignColleaguesGlobal && !empty($colleagues)): ?>
-                      <button type="button"
-                              class="mt-2 px-3 py-1 rounded-lg text-xs font-semibold js-open-assign-modal btn-primary"
-                              data-place-id="<?= $placeId ?>"
-                              data-service-date="<?= htmlspecialchars($dateY) ?>"
-                              data-place-name="<?= htmlspecialchars($placeName) ?>"
-                              data-day-label="<?= htmlspecialchars((string)($d['label'] ?? '')) ?>">
-                        Zapsat kolegu
-                      </button>
-                    <?php endif; ?>
+                      <?php if ($canAssignColleaguesGlobal && !empty($colleagues)): ?>
+                        <button type="button"
+                                class="shrink-0 px-3 py-1 rounded-lg text-xs font-semibold js-open-assign-modal btn-primary whitespace-nowrap"
+                                data-place-id="<?= $placeId ?>"
+                                data-service-date="<?= htmlspecialchars($dateY) ?>"
+                                data-place-name="<?= htmlspecialchars($placeName) ?>"
+                                data-day-label="<?= htmlspecialchars((string)($d['label'] ?? '')) ?>">
+                          Zapsat kolegu
+                        </button>
+                      <?php endif; ?>
+                    </div>
 
                   <?php endif; ?>
 
