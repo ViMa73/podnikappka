@@ -2,6 +2,16 @@
 
 return [
     [
+        'version' => '1.3.0',
+        'released_at' => '2026-09-30',
+        'title' => 'Podpora vývoje PodnikAppky',
+        'important' => false,
+        'changes' => [
+            'Do spodní části postranního menu byl přidán odkaz Podpořit vývoj.',
+            'Odkaz vede na Buy Me a Coffee projektu PodnikAppka a umožňuje dobrovolně podpořit další vývoj aplikace.',
+        ],
+    ],
+    [
         'version' => '1.2.9',
         'released_at' => '2026-09-25',
         'title' => 'Kompaktnější ovládání služeb a poznámek',
