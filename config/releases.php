@@ -2,14 +2,22 @@
 
 return [
     [
+        'version' => '1.3.2',
+        'released_at' => '2026-09-30',
+        'title' => 'Podklady pro zpracování výplat',
+        'important' => false,
+        'changes' => [
+            'U schválené výplaty je nově dostupný přehled podkladů pro zpracování mezd.',
+            'Přehled obsahuje základní mzdu, souhrn prémií, dovolenou, OČR, pracovní neschopnost a odpracované sobotní hodiny.',
+            'U nepřítomností se zobrazuje počet dnů i přehled konkrétních dnů nebo souvislých rozsahů.',
+        ],
+    ],
+    [
         'version' => '1.3.1',
         'released_at' => '2026-09-30',
         'title' => 'Úprava zobrazení podpory vývoje',
         'important' => false,
-        'changes' => [
-            'Odkaz Podpořit vývoj se nezobrazuje firmě s IČO 25929160.',
-            'U ostatních firem zůstává odkaz na podporu vývoje beze změny.',
-        ],
+        'changes' => [],
     ],
     [
         'version' => '1.3.0',

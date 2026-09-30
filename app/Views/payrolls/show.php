@@ -4,6 +4,67 @@
       || (\Core\Auth::role() === 'manager' && $companyPayrollAllowManager);
 
   $statusLabel = ($period['status'] ?? '') === 'approved' ? 'Schváleno' : 'Rozpracováno';
+
+  // Podklady pro účetní ze snapshotu schválené výplaty.
+  $formatMoneyCompact = static function (float $value): string {
+      $decimals = abs($value - round($value)) < 0.005 ? 0 : 2;
+      return number_format($value, $decimals, ',', ' ');
+  };
+  $formatHoursCompact = static function (float $value): string {
+      $decimals = abs($value - round($value)) < 0.005 ? 0 : 2;
+      return number_format($value, $decimals, ',', ' ');
+  };
+  $formatDayRanges = static function (array $dates): string {
+      if (empty($dates)) return '';
+      sort($dates);
+      $dates = array_values(array_unique($dates));
+      $parts = [];
+      $start = $prev = new \DateTimeImmutable($dates[0]);
+      $flush = static function (\DateTimeImmutable $a, \DateTimeImmutable $b) use (&$parts): void {
+          $parts[] = $a == $b ? $a->format('j') : $a->format('j') . ' - ' . $b->format('j');
+      };
+      for ($i = 1, $n = count($dates); $i < $n; $i++) {
+          $current = new \DateTimeImmutable($dates[$i]);
+          if ($prev->modify('+1 day')->format('Y-m-d') === $current->format('Y-m-d')) {
+              $prev = $current;
+              continue;
+          }
+          $flush($start, $prev);
+          $start = $prev = $current;
+      }
+      $flush($start, $prev);
+      return implode(' a ', $parts);
+  };
+  $payrollExportRows = [];
+  if ($canManage && ($period['status'] ?? '') === 'approved') {
+      foreach ($items as $exportItem) {
+          $vacationDates = $ocrDates = $sickDates = [];
+          $saturdayHours = 0.0;
+          foreach (($daysByItem[(int)$exportItem['id']] ?? []) as $exportDay) {
+              $type = (string)($exportDay['day_type'] ?? '');
+              $date = (string)($exportDay['day_date'] ?? '');
+              if ($type === 'vacation') $vacationDates[] = $date;
+              if ($type === 'ocr') $ocrDates[] = $date;
+              if ($type === 'sick') $sickDates[] = $date;
+              if ($date !== '' && (int)(new \DateTimeImmutable($date))->format('N') === 6
+                  && in_array($type, ['work', 'weekend_work', 'holiday_work'], true)) {
+                  $saturdayHours += (float)($exportDay['hours'] ?? 0);
+              }
+          }
+          $payrollExportRows[] = [
+              'name' => (string)$exportItem['user_name_snapshot'],
+              'base' => (float)$exportItem['base_salary_amount'],
+              'bonuses' => (float)$exportItem['company_bonus_amount']
+                  + (float)$exportItem['personal_bonus_amount']
+                  + (float)$exportItem['weekend_bonus_amount']
+                  + (float)$exportItem['holiday_bonus_amount'],
+              'vacation' => $vacationDates,
+              'ocr' => $ocrDates,
+              'sick' => $sickDates,
+              'saturday_hours' => $saturdayHours,
+          ];
+      }
+  }
 ?>
 
 <div class="space-y-6">
@@ -30,6 +91,10 @@
               </button>
             </form>
           <?php else: ?>
+            <button type="button" onclick="openPayrollExportModal()"
+                    class="btn-primary px-5 py-3 rounded-lg font-semibold">
+              Export podkladů pro výplaty
+            </button>
             <form method="POST" action="/payrolls/<?= (int)$period['id'] ?>/reopen">
               <?= \Core\CSRF::field() ?>
               <button class="px-5 py-3 rounded-lg font-semibold"
@@ -241,3 +306,65 @@
     </div>
   <?php endif; ?>
 </div>
+
+
+<?php if ($canManage && ($period['status'] ?? '') === 'approved'): ?>
+<div id="payrollExportModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4"
+     style="background: rgba(0,0,0,.55);" onclick="if(event.target===this) closePayrollExportModal()">
+  <div class="w-full max-w-5xl max-h-[85vh] overflow-hidden rounded-2xl shadow-2xl flex flex-col"
+       style="background: var(--card); border: 1px solid var(--border);">
+    <div class="flex items-center justify-between gap-4 p-5 border-b" style="border-color: var(--border);">
+      <div>
+        <h2 class="text-xl font-semibold" style="color: var(--text);">Podklady pro výplaty</h2>
+        <p class="text-sm mt-1" style="color: var(--muted);">
+          <?= sprintf('%02d/%04d', (int)$period['month'], (int)$period['year']) ?> · schválená výplata
+        </p>
+      </div>
+      <button type="button" onclick="closePayrollExportModal()" class="text-2xl leading-none px-2" style="color: var(--muted);" aria-label="Zavřít">×</button>
+    </div>
+
+    <div class="p-5 overflow-y-auto space-y-3">
+      <?php foreach ($payrollExportRows as $row): ?>
+        <?php
+          $vacationRange = $formatDayRanges($row['vacation']);
+          $ocrRange = $formatDayRanges($row['ocr']);
+          $sickRange = $formatDayRanges($row['sick']);
+        ?>
+        <div class="rounded-xl p-4 text-sm md:text-base leading-relaxed"
+             style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
+          <strong><?= htmlspecialchars($row['name']) ?></strong>
+          – základ: <?= $formatMoneyCompact($row['base']) ?> Kč;
+          prémie: <?= $formatMoneyCompact($row['bonuses']) ?> Kč;
+          Dovolené: <?= count($row['vacation']) ?> (<?= htmlspecialchars($vacationRange) ?>);
+          OČR: <?= count($row['ocr']) ?> (<?= htmlspecialchars($ocrRange) ?>);
+          PN: <?= count($row['sick']) ?> (<?= htmlspecialchars($sickRange) ?>);
+          Soboty: <?= $formatHoursCompact($row['saturday_hours']) ?> h.
+        </div>
+      <?php endforeach; ?>
+    </div>
+
+    <div class="flex justify-end p-5 border-t" style="border-color: var(--border);">
+      <button type="button" onclick="closePayrollExportModal()" class="btn-primary px-5 py-3 rounded-lg font-semibold">Zavřít</button>
+    </div>
+  </div>
+</div>
+<script>
+function openPayrollExportModal() {
+  const modal = document.getElementById('payrollExportModal');
+  if (!modal) return;
+  modal.classList.remove('hidden');
+  modal.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+}
+function closePayrollExportModal() {
+  const modal = document.getElementById('payrollExportModal');
+  if (!modal) return;
+  modal.classList.add('hidden');
+  modal.classList.remove('flex');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') closePayrollExportModal();
+});
+</script>
+<?php endif; ?>
