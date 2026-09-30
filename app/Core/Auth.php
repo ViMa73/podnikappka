@@ -53,6 +53,7 @@ class Auth
         $_SESSION['user_id'] = (int)$user['id'];
         $_SESSION['company_id'] = $user['company_id'] !== null ? (int)$user['company_id'] : null;
         $_SESSION['company_name'] = $user['company_name'] ?? '';
+        $_SESSION['company_ico'] = $user['company_ico'] ?? '';
         $_SESSION['company_allow_manager_settings'] = (int)($user['allow_manager_settings'] ?? 0);
 
         $_SESSION['email'] = $user['email'] ?? '';
@@ -160,6 +161,25 @@ class Auth
     public static function companyName(): string
     {
         return $_SESSION['company_name'] ?? '';
+    }
+
+    public static function companyIco(): string
+    {
+        if (array_key_exists('company_ico', $_SESSION)) {
+            return trim((string)($_SESSION['company_ico'] ?? ''));
+        }
+
+        $companyId = self::companyId();
+        if ($companyId === null) {
+            return '';
+        }
+
+        $stmt = DB::get()->prepare("SELECT ico FROM companies WHERE id = ? LIMIT 1");
+        $stmt->execute([$companyId]);
+        $ico = trim((string)($stmt->fetchColumn() ?: ''));
+        $_SESSION['company_ico'] = $ico;
+
+        return $ico;
     }
 
     public static function avatarPath(): ?string

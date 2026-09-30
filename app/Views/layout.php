@@ -693,7 +693,9 @@
         <div class="mt-auto text-xs text-gray-400 p-2 pt-10 text-center">
             Podnikappka v<?= htmlspecialchars($appVersion['version'] ?? '0.0.0') ?> | <button id="open-whats-new">Co je nového?</button><br>
             by <a href="https://vit-marek.cz" target="_blank" rel="noopener noreferrer">Vít Marek</a><br>
-            <a href="https://buymeacoffee.com/podnikappka" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1 mt-1 font-medium hover:text-gray-600 dark:hover:text-gray-300" title="Podpořit vývoj PodnikAppky">☕ Podpořit vývoj</a><br>
+            <?php if (\Core\Auth::companyIco() !== '25929160'): ?>
+                <a href="https://buymeacoffee.com/podnikappka" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-1 mt-1 font-medium hover:text-gray-600 dark:hover:text-gray-300" title="Podpořit vývoj PodnikAppky">☕ Podpořit vývoj</a><br>
+            <?php endif; ?>
             <a href="/license">AGPL-3.0</a> | <a href="/disclaimer">Disclaimer</a>
         </div>
 

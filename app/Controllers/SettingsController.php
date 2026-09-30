@@ -1045,6 +1045,7 @@ class SettingsController extends Controller
             ]);
         } else {
             $_SESSION['company_name'] = $name;
+            $_SESSION['company_ico'] = $ico;
         }
 
         $_SESSION['flash_success'] = "Nastavení firmy uloženo.";

@@ -2,6 +2,16 @@
 
 return [
     [
+        'version' => '1.3.1',
+        'released_at' => '2026-09-30',
+        'title' => 'Úprava zobrazení podpory vývoje',
+        'important' => false,
+        'changes' => [
+            'Odkaz Podpořit vývoj se nezobrazuje firmě s IČO 25929160.',
+            'U ostatních firem zůstává odkaz na podporu vývoje beze změny.',
+        ],
+    ],
+    [
         'version' => '1.3.0',
         'released_at' => '2026-09-30',
         'title' => 'Podpora vývoje PodnikAppky',
