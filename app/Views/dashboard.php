@@ -7,7 +7,7 @@
   <!-- HORNÍ LIŠTA -->
   <div class="flex items-center justify-between gap-4">
     <div>
-      <h1 class="text-2xl font-bold" style="color: var(--text);">Dashboard</h1>
+      <h1 class="text-2xl font-bold" style="color: var(--text);">Nástěnka</h1>
       <p class="text-sm mt-1" style="color: var(--muted);">
         Přetahováním měníš pořadí widgetů. Rozložení se ukládá automaticky.
       </p>
@@ -37,7 +37,7 @@
        style="background: var(--card); border: 1px solid var(--border);">
     <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
       <div>
-        <h2 class="text-xl font-semibold mb-1" style="color: var(--text);">Ovládací centrum dashboardu</h2>
+        <h2 class="text-xl font-semibold mb-1" style="color: var(--text);">Ovládací centrum nástěnky</h2>
         <p class="text-sm" style="color: var(--muted);">
           Přetahováním měníš pořadí widgetů. Tady si je můžeš také zapnout nebo vypnout a obnovit výchozí rozložení.
         </p>

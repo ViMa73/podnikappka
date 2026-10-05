@@ -16,7 +16,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title ?? 'Dashboard' ?></title>
+    <title><?= $title ?? 'Nástěnka' ?></title>
     <link rel="manifest" href="/uploads/site.webmanifest">
     <meta name="theme-color" content="#1E3A5F">
     <link rel="icon" type="image/svg+xml" href="/uploads/podnikappka_icon.png">
@@ -592,7 +592,20 @@
               }
             ?>
 
-            <?php if ($showPayrollsMenu): ?>
+            <?php
+              $showEconomicIndicatorsMenu = false;
+              if (\Core\Feature::enabled('economic_indicators')) {
+                  if (\Core\Auth::role() === 'owner') {
+                      $showEconomicIndicatorsMenu = true;
+                  } elseif (\Core\Auth::role() === 'manager') {
+                      $stmtEconomicMenu = DB::get()->prepare("SELECT economic_indicators_allow_manager FROM companies WHERE id = ? LIMIT 1");
+                      $stmtEconomicMenu->execute([(int)\Core\Auth::companyId()]);
+                      $showEconomicIndicatorsMenu = (int)$stmtEconomicMenu->fetchColumn() === 1;
+                  }
+              }
+            ?>
+
+            <?php if ($showEconomicIndicatorsMenu): ?>
               <a href="/economic-indicators" class="<?= \Core\Nav::linkClass('/economic-indicators') ?>">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g>

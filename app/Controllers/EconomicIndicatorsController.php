@@ -45,7 +45,23 @@ class EconomicIndicatorsController
 
     private function canView(): bool
     {
-        return in_array(Auth::role(), ['owner', 'manager'], true);
+        if (Auth::role() === 'owner') {
+            return true;
+        }
+
+        if (Auth::role() === 'manager') {
+            $db = DB::get();
+            $stmt = $db->prepare("
+                SELECT economic_indicators_allow_manager
+                FROM companies
+                WHERE id = ?
+                LIMIT 1
+            ");
+            $stmt->execute([$this->companyId()]);
+            return (int)$stmt->fetchColumn() === 1;
+        }
+
+        return false;
     }
 
     private function canManage(): bool
@@ -569,6 +585,30 @@ class EconomicIndicatorsController
             $defId = (int)$row['definition_id'];
             $pKey = (string)$row['period_key'];
             $valuesMap[$defId][$pKey] = (float)$row['value'];
+        }
+
+        // U měsíčních ukazatelů nezobrazujeme právě probíhající měsíc, dokud pro něj
+        // není uložená alespoň jedna skutečná hodnota. Nula doplněná jen pro graf by
+        // jinak zkreslovala regresní trend.
+        if ($periodType === 'monthly' && !empty($timelineKeys)) {
+            $currentMonthKey = (new \DateTimeImmutable('now'))->format('Y-m');
+            $lastIndex = count($timelineKeys) - 1;
+
+            if (($timelineKeys[$lastIndex] ?? null) === $currentMonthKey) {
+                $hasCurrentMonthValue = false;
+                foreach ($definitionIds as $defId) {
+                    if (array_key_exists($currentMonthKey, $valuesMap[$defId] ?? [])) {
+                        $hasCurrentMonthValue = true;
+                        break;
+                    }
+                }
+
+                if (!$hasCurrentMonthValue) {
+                    array_pop($timeline);
+                    array_pop($timelineKeys);
+                    array_pop($labels);
+                }
+            }
         }
 
         $datasets = [];

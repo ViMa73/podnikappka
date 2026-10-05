@@ -627,7 +627,7 @@ class DashboardController extends Controller
         }
 
         $view = 'dashboard';
-        $title = 'Dashboard';
+        $title = 'Nástěnka';
         require __DIR__ . '/../Views/layout.php';
     }
 
@@ -724,7 +724,7 @@ class DashboardController extends Controller
 
         $workDate = trim($_POST['work_date'] ?? '');
         if ($workDate !== $todayStr) {
-            $_SESSION['flash_error'] = "Na dashboardu lze upravit pouze dnešní docházku.";
+            $_SESSION['flash_error'] = "Na nástěnce lze upravit pouze dnešní docházku.";
             header("Location: /dashboard");
             exit;
         }

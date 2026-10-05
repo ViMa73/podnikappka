@@ -2,6 +2,19 @@
 
 return [
     [
+        'version' => '1.3.3',
+        'released_at' => '2026-10-05',
+        'title' => 'Ekonomické ukazatele a úpravy rozhraní',
+        'important' => false,
+        'changes' => [
+            'Ekonomické ukazatele se v menu zobrazují pouze oprávněným uživatelům.',
+            'Aktuální měsíc bez uložených dat již neovlivňuje graf ani výpočet trendu.',
+            'Denní poznámky ve Službách mají sjednocené světlé pozadí s názvy řádků.',
+            'Dashboard byl v uživatelském rozhraní přejmenován na Nástěnku.',
+            'Opraveno zobrazení widgetu Dnešní docházka na úzkých mobilních displejích.',
+        ],
+    ],
+    [
         'version' => '1.3.2',
         'released_at' => '2026-09-30',
         'title' => 'Podklady pro zpracování výplat',

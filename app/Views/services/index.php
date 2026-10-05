@@ -17,13 +17,13 @@ $bgClosed      = 'color-mix(in srgb, var(--closed) 60%, transparent)';
 $bgFree        = 'color-mix(in srgb, var(--free) 60%, transparent)';
 $bgTaken       = 'color-mix(in srgb, var(--taken) 60%, transparent)';
 $bgVacation    = 'color-mix(in srgb, var(--vacation) 60%, transparent)';
-$bgDayNote     = 'color-mix(in srgb, var(--note) 60%, transparent)';
+$bgDayNote     = 'var(--card)';
 
 $bgClosedToday   = 'color-mix(in srgb, var(--closed-today) 60%, transparent)';
 $bgFreeToday     = 'color-mix(in srgb, var(--free-today) 60%, transparent)';
 $bgTakenToday    = 'color-mix(in srgb, var(--taken-today) 60%, transparent)';
 $bgVacationToday = 'color-mix(in srgb, var(--vacation-today) 60%, transparent)';
-$bgDayNoteToday  = 'color-mix(in srgb, var(--note-today) 60%, transparent)';
+$bgDayNoteToday  = 'var(--card)';
 
 $dayNotesMapJson = json_encode($dayNotesMap ?? [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 ?>

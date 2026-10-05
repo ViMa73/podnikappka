@@ -33,7 +33,7 @@ $dashboardDefaultWorked = sprintf(
 
 <form method="POST"
       action="/dashboard/attendance-today"
-      class="space-y-3 js-dashboard-attendance-form"
+      class="space-y-3 js-dashboard-attendance-form min-w-0 w-full max-w-full"
       data-default-special="<?= htmlspecialchars($dashboardDefaultWorked) ?>"
       <?= $prevPayload !== '' ? 'data-prev-copy="' . $prevPayload . '"' : '' ?>>
   <?= \Core\CSRF::field() ?>
@@ -46,7 +46,7 @@ $dashboardDefaultWorked = sprintf(
   <div>
     <label class="block text-xs mb-1" style="color: var(--muted);">Speciální</label>
     <select name="special_code"
-            class="js-dashboard-attendance-special w-full px-3 py-2 rounded-lg text-sm"
+            class="js-dashboard-attendance-special w-full min-w-0 max-w-full box-border px-3 py-2 rounded-lg text-sm"
             style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
       <option value="" <?= $specialCode === '' ? 'selected' : '' ?>>--- Nic</option>
       <option value="D" <?= $specialCode === 'D' ? 'selected' : '' ?>>D - Dovolená</option>
@@ -64,14 +64,14 @@ $dashboardDefaultWorked = sprintf(
     </button>
   <?php endif; ?>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0">
     <div>
       <label class="block text-xs mb-1" style="color: var(--muted);">Příchod</label>
       <input type="time"
              name="arrival_time"
              value="<?= htmlspecialchars($arrivalTime) ?>"
              step="<?= (int)$dashboardAttendanceTimeStepSeconds ?>"
-             class="js-dashboard-attendance-time w-full px-3 py-2 rounded-lg text-sm"
+             class="js-dashboard-attendance-time w-full min-w-0 max-w-full box-border px-3 py-2 rounded-lg text-sm"
              style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
     </div>
     <div>
@@ -80,19 +80,19 @@ $dashboardDefaultWorked = sprintf(
              name="departure_time"
              value="<?= htmlspecialchars($departureTime) ?>"
              step="<?= (int)$dashboardAttendanceTimeStepSeconds ?>"
-             class="js-dashboard-attendance-time w-full px-3 py-2 rounded-lg text-sm"
+             class="js-dashboard-attendance-time w-full min-w-0 max-w-full box-border px-3 py-2 rounded-lg text-sm"
              style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
     </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0">
     <div>
       <label class="block text-xs mb-1" style="color: var(--muted);">Oběd - od</label>
       <input type="time"
              name="lunch_from"
              value="<?= htmlspecialchars($lunchFrom) ?>"
              step="<?= (int)$dashboardAttendanceTimeStepSeconds ?>"
-             class="js-dashboard-attendance-time w-full px-3 py-2 rounded-lg text-sm"
+             class="js-dashboard-attendance-time w-full min-w-0 max-w-full box-border px-3 py-2 rounded-lg text-sm"
              style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
     </div>
     <div>
@@ -101,20 +101,20 @@ $dashboardDefaultWorked = sprintf(
              name="lunch_to"
              value="<?= htmlspecialchars($lunchTo) ?>"
              step="<?= (int)$dashboardAttendanceTimeStepSeconds ?>"
-             class="js-dashboard-attendance-time w-full px-3 py-2 rounded-lg text-sm"
+             class="js-dashboard-attendance-time w-full min-w-0 max-w-full box-border px-3 py-2 rounded-lg text-sm"
              style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
     </div>
   </div>
 
   <?php if (!empty($attendanceAllowBreak)): ?>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0">
       <div>
         <label class="block text-xs mb-1" style="color: var(--muted);">Přestávka - od</label>
         <input type="time"
                name="break_from"
                value="<?= htmlspecialchars($breakFrom) ?>"
                step="<?= (int)$dashboardAttendanceTimeStepSeconds ?>"
-               class="js-dashboard-attendance-time w-full px-3 py-2 rounded-lg text-sm"
+               class="js-dashboard-attendance-time w-full min-w-0 max-w-full box-border px-3 py-2 rounded-lg text-sm"
                style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
       </div>
       <div>
@@ -123,7 +123,7 @@ $dashboardDefaultWorked = sprintf(
                name="break_to"
                value="<?= htmlspecialchars($breakTo) ?>"
                step="<?= (int)$dashboardAttendanceTimeStepSeconds ?>"
-               class="js-dashboard-attendance-time w-full px-3 py-2 rounded-lg text-sm"
+               class="js-dashboard-attendance-time w-full min-w-0 max-w-full box-border px-3 py-2 rounded-lg text-sm"
                style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
       </div>
     </div>
@@ -134,7 +134,7 @@ $dashboardDefaultWorked = sprintf(
     <input type="text"
            name="note"
            value="<?= htmlspecialchars($attendanceNote) ?>"
-           class="w-full px-3 py-2 rounded-lg text-sm"
+           class="w-full min-w-0 max-w-full box-border px-3 py-2 rounded-lg text-sm"
            style="background: var(--bg); border: 1px solid var(--border); color: var(--text);">
   </div>
 
