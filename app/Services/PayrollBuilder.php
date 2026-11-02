@@ -392,6 +392,8 @@ class PayrollBuilder
                 ? (float)$company['payroll_default_company_bonus_value']
                 : null,
 
+            'weekend_bonus_min_hours' => (float)($company['payroll_weekend_bonus_min_hours'] ?? 0),
+            'holiday_bonus_min_hours' => (float)($company['payroll_holiday_bonus_min_hours'] ?? 0),
             'weekend_bonus_mode' => (string)($user['payroll_weekend_bonus_mode'] ?? 'company_default'),
             'weekend_bonus_type' => $user['payroll_weekend_bonus_type'] ?: (string)($company['payroll_weekend_bonus_type'] ?? 'shift_amount'),
             'weekend_bonus_value' => $user['payroll_weekend_bonus_value'] !== null
@@ -451,6 +453,8 @@ class PayrollBuilder
         $holidayHours = 0.0;
         $weekendShifts = 0;
         $holidayShifts = 0;
+        $weekendShiftHours = [];
+        $holidayShiftHours = [];
         $vacationHours = 0.0;
         $ocrHours = 0.0;
         $sickHours = 0.0;
@@ -517,6 +521,7 @@ class PayrollBuilder
             if ($isHoliday) {
                 $holidayHours += $hours;
                 $holidayShifts++;
+                $holidayShiftHours[] = $hours;
                 $days[] = [
                     'date' => $date,
                     'type' => 'holiday_work',
@@ -526,6 +531,7 @@ class PayrollBuilder
             } elseif ($isWeekend) {
                 $weekendHours += $hours;
                 $weekendShifts++;
+                $weekendShiftHours[] = $hours;
                 $days[] = [
                     'date' => $date,
                     'type' => 'weekend_work',
@@ -553,6 +559,8 @@ class PayrollBuilder
             'holiday_hours' => round($holidayHours, 2),
             'weekend_shifts' => $weekendShifts,
             'holiday_shifts' => $holidayShifts,
+            'weekend_shift_hours' => $weekendShiftHours,
+            'holiday_shift_hours' => $holidayShiftHours,
 
             'vacation_hours' => round($vacationHours, 2),
             'ocr_hours' => round($ocrHours, 2),
@@ -625,7 +633,7 @@ class PayrollBuilder
             (float)($snapshot['weekend_bonus_value'] ?? 0),
             $hourlyRate,
             (float)$attendance['weekend_hours'],
-            (int)$attendance['weekend_shifts']
+            count(array_filter($attendance['weekend_shift_hours'], static fn($h) => $h > 0 && $h >= (float)($snapshot['weekend_bonus_min_hours'] ?? 0)))
         );
         $holidayBonus = $this->computeSpecialBonus(
             (string)$snapshot['holiday_bonus_mode'],
@@ -633,7 +641,7 @@ class PayrollBuilder
             (float)($snapshot['holiday_bonus_value'] ?? 0),
             $hourlyRate,
             (float)$attendance['holiday_hours'],
-            (int)$attendance['holiday_shifts']
+            count(array_filter($attendance['holiday_shift_hours'], static fn($h) => $h > 0 && $h >= (float)($snapshot['holiday_bonus_min_hours'] ?? 0)))
         );
 
         $total = $base + $companyBonus + $weekendBonus + $holidayBonus;

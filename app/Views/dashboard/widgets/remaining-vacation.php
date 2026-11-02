@@ -14,6 +14,11 @@
   </div>
 
   <div class="flex items-center justify-between">
+    <span class="text-sm" style="color: var(--muted);">Naplánováno</span>
+    <span class="font-semibold" style="color: var(--text);"><?= number_format((float)$vacationPlannedYear, 2, ',', ' ') ?> h</span>
+  </div>
+
+  <div class="flex items-center justify-between">
     <span class="text-sm" style="color: var(--muted);">Vyčerpáno</span>
     <span class="font-semibold" style="color: var(--text);">
       <?= number_format((float)$vacationUsedYear, 2, ',', ' ') ?> h

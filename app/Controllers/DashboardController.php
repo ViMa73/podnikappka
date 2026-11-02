@@ -526,6 +526,7 @@ class DashboardController extends Controller
         $showVacationWidget = Feature::enabled('vacations');
         $currentYear = (int)date('Y');
         $vacationEntitlementYear = (float)($me['vacation_hours_year'] ?? 0);
+        $vacationPlannedYear = 0.0;
         $vacationUsedYear = 0.0;
         $vacationRemainingYear = 0.0;
 
@@ -539,7 +540,10 @@ class DashboardController extends Controller
             ");
             $stmt->execute([$companyId, $userId, $currentYear]);
 
-            $vacationUsedYear = (float)($stmt->fetchColumn() ?? 0);
+            $vacationPlannedYear = (float)($stmt->fetchColumn() ?? 0);
+            $stmt = $db->prepare("SELECT COALESCE(SUM(worked_minutes), 0) FROM attendance_records WHERE company_id = ? AND user_id = ? AND work_date >= ? AND work_date < ? AND special_code = 'D'");
+            $stmt->execute([$companyId, $userId, sprintf('%04d-01-01', $currentYear), sprintf('%04d-01-01', $currentYear + 1)]);
+            $vacationUsedYear = (float)$stmt->fetchColumn() / 60;
             $vacationRemainingYear = $vacationEntitlementYear - $vacationUsedYear;
 
             if ($vacationRemainingYear < 0) {

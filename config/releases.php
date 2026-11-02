@@ -1,6 +1,7 @@
 <?php
 
 return [
+    ['version' => '1.3.4', 'released_at' => '2026-11-02', 'title' => 'Příplatky, osobní ohodnocení a dovolená', 'important' => false, 'changes' => ['Minimální délka směny pro pevné víkendové a sváteční příplatky.', 'V detailu výplaty se zobrazuje osobní ohodnocení za minulý měsíc.', 'Widget dovolené odděluje plánovanou a vyčerpanou dovolenou.']],
     [
         'version' => '1.3.3',
         'released_at' => '2026-10-05',

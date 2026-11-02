@@ -224,7 +224,7 @@
 
               <div class="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label class="text-sm" style="color: var(--text);">Osobní ohodnocení</label>
+                  <label class="text-sm" style="color: var(--text);">Osobní ohodnocení<?php if (isset($previousPersonalBonuses[(int)$item['user_id']])): ?> (minule: <?= number_format($previousPersonalBonuses[(int)$item['user_id']], 2, ',', ' ') ?> Kč)<?php endif; ?></label>
                   <input type="text"
                          name="personal_bonus_amount"
                          value="<?= htmlspecialchars((string)$item['personal_bonus_amount']) ?>"

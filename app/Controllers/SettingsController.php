@@ -435,6 +435,9 @@ class SettingsController extends Controller
             $holidayBonusType = 'shift_amount';
         }
 
+        $weekendMinHours = max(0, (float)str_replace(',', '.', (string)($_POST['payroll_weekend_bonus_min_hours'] ?? '0')));
+        $holidayMinHours = max(0, (float)str_replace(',', '.', (string)($_POST['payroll_holiday_bonus_min_hours'] ?? '0')));
+
         $weekendBonusValue = (float)str_replace(',', '.', (string)($_POST['payroll_weekend_bonus_value'] ?? '0'));
         $holidayBonusValue = (float)str_replace(',', '.', (string)($_POST['payroll_holiday_bonus_value'] ?? '0'));
 
@@ -506,9 +509,11 @@ class SettingsController extends Controller
 
                 payroll_weekend_bonus_type = ?,
                 payroll_weekend_bonus_value = ?,
+                payroll_weekend_bonus_min_hours = ?,
 
                 payroll_holiday_bonus_type = ?,
                 payroll_holiday_bonus_value = ?,
+                payroll_holiday_bonus_min_hours = ?,
 
                 payroll_overlap_rule = ?,
 
@@ -537,9 +542,11 @@ class SettingsController extends Controller
 
             $weekendBonusType,
             $weekendBonusValue,
+            $weekendMinHours,
 
             $holidayBonusType,
             $holidayBonusValue,
+            $holidayMinHours,
 
             $payrollOverlapRule,
 

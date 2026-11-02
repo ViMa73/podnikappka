@@ -247,6 +247,14 @@ class PayrollsController
             $items = $row ? [$row] : [];
         }
 
+        $previousPersonalBonuses = [];
+        if ($items) {
+            $previousMonth = date('Y-m', strtotime((string)$period['year'] . '-' . sprintf('%02d', (int)$period['month']) . '-01 -1 month'));
+            $stmt = $db->prepare("SELECT pi.user_id, pi.personal_bonus_amount FROM payroll_items pi JOIN payroll_periods pp ON pp.id = pi.payroll_period_id WHERE pp.company_id = ? AND pp.year = ? AND pp.month = ?");
+            $stmt->execute([$this->companyId(), (int)substr($previousMonth, 0, 4), (int)substr($previousMonth, 5, 2)]);
+            foreach ($stmt->fetchAll() as $previousItem) $previousPersonalBonuses[(int)$previousItem['user_id']] = (float)$previousItem['personal_bonus_amount'];
+        }
+
         $daysByItem = [];
         if (!empty($items)) {
             $itemIds = array_map(static fn($x) => (int)$x['id'], $items);

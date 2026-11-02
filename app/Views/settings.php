@@ -824,6 +824,8 @@ $places = $stmt->fetchAll();
             $payrollWeekendBonusType = 'shift_amount';
         }
         $payrollWeekendBonusValue = (string)($company['payroll_weekend_bonus_value'] ?? '0');
+        $payrollWeekendMinHours = (string)($company['payroll_weekend_bonus_min_hours'] ?? '0');
+        $payrollHolidayMinHours = (string)($company['payroll_holiday_bonus_min_hours'] ?? '0');
 
         $payrollHolidayBonusType = (string)($company['payroll_holiday_bonus_type'] ?? 'shift_amount');
         if (!in_array($payrollHolidayBonusType, ['shift_amount', 'hour_amount', 'hourly_rate_percent'], true)) {
@@ -1013,6 +1015,11 @@ $places = $stmt->fetchAll();
                            class="mt-1 w-full px-4 py-3 rounded-lg"
                            style="background: var(--card); border: 1px solid var(--border); color: var(--text);">
                   </div>
+                  <div>
+                    <label class="text-sm" style="color: var(--text);">Minimální počet hodin pro příplatek za směnu</label>
+                    <input type="number" name="payroll_weekend_bonus_min_hours" step="0.01" min="0" value="<?= htmlspecialchars($payrollWeekendMinHours) ?>" <?= $canEdit ? '' : 'disabled' ?> class="mt-1 w-full px-4 py-3 rounded-lg" style="background: var(--card); border: 1px solid var(--border); color: var(--text);">
+                    <p class="text-xs mt-1" style="color: var(--muted);">Prázdné = 0. Směna musí mít vždy více než 0 odpracovaných hodin.</p>
+                  </div>
                 </div>
               </div>
 
@@ -1042,6 +1049,11 @@ $places = $stmt->fetchAll();
                            <?= $canEdit ? '' : 'disabled' ?>
                            class="mt-1 w-full px-4 py-3 rounded-lg"
                            style="background: var(--card); border: 1px solid var(--border); color: var(--text);">
+                  </div>
+                  <div>
+                    <label class="text-sm" style="color: var(--text);">Minimální počet hodin pro příplatek za směnu</label>
+                    <input type="number" name="payroll_holiday_bonus_min_hours" step="0.01" min="0" value="<?= htmlspecialchars($payrollHolidayMinHours) ?>" <?= $canEdit ? '' : 'disabled' ?> class="mt-1 w-full px-4 py-3 rounded-lg" style="background: var(--card); border: 1px solid var(--border); color: var(--text);">
+                    <p class="text-xs mt-1" style="color: var(--muted);">Prázdné = 0. Směna musí mít vždy více než 0 odpracovaných hodin.</p>
                   </div>
                 </div>
               </div>
